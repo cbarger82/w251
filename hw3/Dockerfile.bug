@@ -1,0 +1,8 @@
+FROM alpine:3.7
+
+# Install necessary packages 
+RUN apk update
+RUN apk add mosquitto
+
+CMD /usr/sbin/mosquitto 
+

@@ -1,0 +1,22 @@
+FROM ubuntu
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary packages 
+RUN apt-get update
+RUN apt-get install -y python3-opencv \
+                       python3-pip \
+                       libopencv-dev \
+                       libcanberra-gtk3-module \
+                       vim-tiny \
+                       mosquitto-clients
+
+# Install paho mqtt to send messages to cloud
+RUN pip3 install paho-mqtt
+
+RUN mkdir hw3_fd
+COPY . /hw3_fd
+WORKDIR /hw3_fd
+
+ENTRYPOINT [ "python3" ]
+CMD ["face_detection.py"]

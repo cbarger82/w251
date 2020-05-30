@@ -1,0 +1,13 @@
+FROM alpine:3.7
+
+# Install necessary packages 
+RUN apk update
+RUN apk add mosquitto-clients
+RUN apk add py2-paho-mqtt
+
+RUN mkdir picsend
+COPY . /picsend
+WORKDIR /picsend
+
+ENTRYPOINT ["python2"]
+CMD ["picsender.py"]

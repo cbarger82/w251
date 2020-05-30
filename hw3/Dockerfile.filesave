@@ -1,0 +1,20 @@
+FROM ubuntu
+
+# Install necessary packages 
+RUN apt-get update
+RUN apt-get install -y -q python3-opencv \
+                       python3-pip \
+                       libopencv-dev \
+                       libcanberra-gtk3-module \
+                       vim-tiny \
+                       mosquitto-clients
+
+# Install paho mqtt to send messages to cloud
+RUN pip install paho-mqtt
+
+RUN mkdir filesave
+COPY . /filesave
+WORKDIR /filesave
+
+ENTRYPOINT [ "python3" ]
+CMD ["facesave.py"]
