@@ -5,17 +5,29 @@ ConvnetJS is a very simple yet powerful JavaScript library for Convolutional Neu
 and now the leader of the Autonomous Driving project at Tesla.  The library runs directly in the browser and uses the CPU of your computer for training (just one core, so it will be woefully slow on large networks).  It is highly interactive, however, and enables you to rapidly experiment with small nets. You can read more about ConvNetJs and its api at http://cs.stanford.edu/people/karpathy/convnetjs/
 Our first lab aligns with the 2D classification example available here: http://cs.stanford.edu/people/karpathy/convnetjs/demo/classify2d.html
 Once you hit this page, the network starts running.  
-* Add a few red dots in previously green areas by clicking the left mouse button.  Is the network able to adjust and correctly predict the color now?
-* Add a few green dots in previously red areas by clicking the shift left mouse button.  Can the network adapt?
+* Add a few red dots in previously green areas by clicking the left mouse button.  Is the network able to adjust and correctly predict the color now? --- Yes, as long as the additions are not in the middle of the green area
+* Add a few green dots in previously red areas by clicking the shift left mouse button.  Can the network adapt? --- Again, yes, as long as the additions are added to areas that make sense - it is interesting to see the changes to the network as it adapts to additions.
 * Review the network structure in the text box.  Can you name the layers and explain what they do?
-* Reduce the number of neurons in the conv layers and see how the network responds. Does it become less accurate?
-* Increase the number of neurons and layers and cause an overfit.  Make sure you understand the concept
-* Play with activation functions.. -- relu vs sigmoid vs tanh... Do you see a difference ? Relu is supposed to be faster but less accurate.
+
+layer_defs = [];
+layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:2}); -- this is the INPUT layer, which is a dummy layer that declares the size of input volume and must be the first layer defined. In this case, we are declaring 2-Dimensional input points
+layer_defs.push({type:'fc', num_neurons:6, activation: 'tanh'}); -- this is the FULLY CONNECTED layer. The job of these layers is to declare a layer of neurons that perform weighted addition of all inputs and pass them through a non-linearity. This line specifically is creating a layer of SIX neurons that use the 'tan h(x)' activation function
+layer_defs.push({type:'fc', num_neurons:2, activation: 'tanh'}); -- This line is creating a layer of two neurons that also use the 'tan h(x)' activation function
+layer_defs.push({type:'softmax', num_classes:2}); -- The bit identifies the classifier aka LOSS layer. This type of layer is used when we want to predict a set of discrete classes for our data. In this line of code, we are using type SOFTMAX, whose outputs are probabilities that sum to 1. Setting the number of classes to 2 means you have a binary classification, where your class is either 0 or 1.
+
+net = new convnetjs.Net();
+net.makeLayers(layer_defs);
+
+trainer = new convnetjs.SGDTrainer(net, {learning_rate:0.01, momentum:0.1, batch_size:10, l2_decay:0.001});
+
+* Reduce the number of neurons in the conv layers and see how the network responds. Does it become less accurate? --- If the number of neurons is small, then the network becomes much less accurate. Even at 5 neurons, the network seems to be able to make a good fit of the data.
+* Increase the number of neurons and layers and cause an overfit.  Make sure you understand the concept --- Increasing the number of neurons and layers makes the network fit to every single dot, even those that seem a bit erroneous. Based on what the picture shows once the model is done fitting, it would be hard to think that if a completely different set of data was input, that the algorithm would correctly identify. 
+* Play with activation functions.. -- relu vs sigmoid vs tanh... Do you see a difference ? Relu is supposed to be faster but less accurate. --- Looking at different types of data on the page, when I clicked 'simple data', the relu actually seemed to take longer to classify than the tanh did. Lowering down to 2 neuron layers leveled the playing field and now both relu and tanh seem to be quick, but less accurate than tanh with 5 nueron layers.
 
 #### 2. ConvnetJS MNIST demo
 In this lab, we will look at the processing of the MNIST data set using ConvnetJS.  This demo uses this page: http://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
 The MNIST data set consists of 28x28 black and white images of hand written digits and the goal is to correctly classify them.  Once you load the page, the network starts running and you can see the loss and predictions change in real time.  Try the following:
-* Name all the layers in the network, describe what they do.
+* Name all the layers in the network, describe what they do. 
 * Experiment with the number  and size of filters in each layer.  Does it improve the accuracy?
 * Remove the pooling layers.  Does it impact the accuracy?
 * Add one more conv layer.  Does it help with accuracy?
