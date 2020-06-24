@@ -10,15 +10,14 @@ Once you hit this page, the network starts running.
 * Review the network structure in the text box.  Can you name the layers and explain what they do?
 
 layer_defs = [];
+
 layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:2}); -- this is the INPUT layer, which is a dummy layer that declares the size of input volume and must be the first layer defined. In this case, we are declaring 2-Dimensional input points
+
+
 layer_defs.push({type:'fc', num_neurons:6, activation: 'tanh'}); -- this is the FULLY CONNECTED layer. The job of these layers is to declare a layer of neurons that perform weighted addition of all inputs and pass them through a non-linearity. This line specifically is creating a layer of SIX neurons that use the 'tan h(x)' activation function
+
 layer_defs.push({type:'fc', num_neurons:2, activation: 'tanh'}); -- This line is creating a layer of two neurons that also use the 'tan h(x)' activation function
 layer_defs.push({type:'softmax', num_classes:2}); -- The bit identifies the classifier aka LOSS layer. This type of layer is used when we want to predict a set of discrete classes for our data. In this line of code, we are using type SOFTMAX, whose outputs are probabilities that sum to 1. Setting the number of classes to 2 means you have a binary classification, where your class is either 0 or 1.
-
-net = new convnetjs.Net();
-net.makeLayers(layer_defs);
-
-trainer = new convnetjs.SGDTrainer(net, {learning_rate:0.01, momentum:0.1, batch_size:10, l2_decay:0.001});
 
 * Reduce the number of neurons in the conv layers and see how the network responds. Does it become less accurate? --- If the number of neurons is small, then the network becomes much less accurate. Even at 5 neurons, the network seems to be able to make a good fit of the data.
 * Increase the number of neurons and layers and cause an overfit.  Make sure you understand the concept --- Increasing the number of neurons and layers makes the network fit to every single dot, even those that seem a bit erroneous. Based on what the picture shows once the model is done fitting, it would be hard to think that if a completely different set of data was input, that the algorithm would correctly identify. 
@@ -27,12 +26,25 @@ trainer = new convnetjs.SGDTrainer(net, {learning_rate:0.01, momentum:0.1, batch
 #### 2. ConvnetJS MNIST demo
 In this lab, we will look at the processing of the MNIST data set using ConvnetJS.  This demo uses this page: http://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
 The MNIST data set consists of 28x28 black and white images of hand written digits and the goal is to correctly classify them.  Once you load the page, the network starts running and you can see the loss and predictions change in real time.  Try the following:
-* Name all the layers in the network, describe what they do. 
-* Experiment with the number  and size of filters in each layer.  Does it improve the accuracy?
-* Remove the pooling layers.  Does it impact the accuracy?
-* Add one more conv layer.  Does it help with accuracy?
-* Increase the batch size.  What impact does it have?
-* What is the best accuracy you can achieve? Are you over 99%? 99.5%?
+* Name all the layers in the network, describe what they do. ---- Code snippet from page:
+
+layer_defs.push({type:'input', out_sx:24, out_sy:24, out_depth:1}); --- Input layer to define the size of the input volume. In this case, we see that the input is a 24x24 RGB image
+
+layer_defs.push({type:'conv', sx:5, filters:8, stride:1, pad:2, activation:'relu'}); --- This is a CONVOLUTION layer, which are mainly used when training CNNs on images. A convolution layer is similar to the FC layer from the previous example in that it creates neuron layers with the difference being that these layers are only connected locally, meaning they are not connected to every neuron in the network below; they are connected to only a few and their parameters are shared. These layers take in three parameter inputs; 'filter size' (sx), 'number of filters' (filters), and the 'stride' at which they are applied in the input volume (stride). The activation parameter works similarly to the fc input and the 'pad' paramter is used to automatically pad the input by some amount of pixels with zeros. Specific to this line of code, 8 5x5 filters will be convolved with the input using a padding of 2 and an activation function of ReLu.
+
+layer_defs.push({type:'pool', sx:2, stride:2}); --- The POOLING layer provides max pooling on every input layer without going through the activation step. In this case, we are saying we want to perform max pooling in 2x2 non-overlapping neighborhoods
+
+layer_defs.push({type:'conv', sx:5, filters:16, stride:1, pad:2, activation:'relu'}); --- Similar to above, but with 16 5x5 filters instead of 8
+
+layer_defs.push({type:'pool', sx:3, stride:3}); --- Similar to above, but we now want to perform max pooling in 3x3 non-overlapping neighborhoods
+
+layer_defs.push({type:'softmax', num_classes:10}); --- Using softmax, so will output probabilities, with number of classes, k equal to 10. 
+
+* Experiment with the number and size of filters in each layer.  Does it improve the accuracy? Lowering the number of filters decreases accuracy, as does making the size of the filters smaller. Increasing both seems to increase the accuracy quite a bit. Decreasing the number of filters to 2 decreased the accuracy quite a lot!
+* Remove the pooling layers.  Does it impact the accuracy? Removing the pooling appears to allow the model to get to a higher training accuracy faster than when the pooling layers are present.
+* Add one more conv layer.  Does it help with accuracy? -- Adding another conv layer actually seems to hurt the model. Two conv layers seemed to produce results faster and more accurately than when a third layer was added. Training accuracies using three conv layers seemed to peak out at around 97-98% whereas with two layers only and allowing the model to run for less time, I noticed a few 99-100% peaks during training.
+* Increase the batch size.  What impact does it have? --- Increasing the batch size seems to help the accuracy of the model, which I would expect since more data is trained/tested with each iteration. Increasing it too much (like, 5000) seemed a detriment to both the computational power and the accuracy.
+* What is the best accuracy you can achieve? Are you over 99%? 99.5%? Using 2 conv layers with 4 5x5 and 8 5x5 filters, I can achieve above 99% accuracy. My batch size is set to 50.
 
 #### 3. Build your own model in Keras
 The [Conversation AI](https://conversationai.github.io/) team, a research initiative founded by [Jigsaw](https://jigsaw.google.com/) and Google (both a part of Alphabet) are working on tools to help improve online conversation. One area of focus is the study of negative online behaviors, like toxic comments (i.e. comments that are rude, disrespectful or otherwise likely to make someone leave a discussion).   
