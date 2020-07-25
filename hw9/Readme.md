@@ -1,7 +1,7 @@
 Homework 9 Q&A:
 
 1. How long does it take to complete the training run? (hint: this session is on distributed training, so it will take a while)
-
+Am training using four V100s. The training is at step 700 out of the 50,000 (7:07pm 7/25) I set in the config file and so far I am averaging about 1.7s per step, so the training should take approximately 23.6 hours. If I include the time it took to do the EVAL steps, I'd say the training will be 24 hours total. 
 
 2. Do you think your model is fully trained? How can you tell?
 
