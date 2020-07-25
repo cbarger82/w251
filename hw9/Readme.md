@@ -13,7 +13,7 @@ Am training using four V100s. The training is at step 700 out of the 50,000 (7:0
 
 
 5. Did you monitor network traffic (hint: apt install nmon ) ? Was network the bottleneck?
-
+I monitored network traffic with nmon (quick screen grab in hw9 folder from ~1000th step). The network appears to be a bottle neck since the CPU util never showed them all running at 100% at any point nor were there more than maybe 1/3 of the CPUs running at once at greater than 30% util.
 
 6. Take a look at the plot of the learning rate and then check the config file. Can you explan this setting?
 
@@ -28,6 +28,6 @@ Am training using four V100s. The training is at step 700 out of the 50,000 (7:0
 
 
 10. Remember the definition of a "step". How long did an average step take?
-
+An average step took 1.7 seconds.
 
 11. How does that correlate with the observed network utilization between nodes?
