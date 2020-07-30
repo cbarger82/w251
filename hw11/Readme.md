@@ -33,3 +33,11 @@ As stated above, the epsilon value represents the amximum reward that is attaina
 7. Describe "Q-Learning".
 
 Q-learning is a type of reinforcement learning that "learns as we take each action but instead searches through the possible subsequent actions to learn faster". (source: https://towardsdatascience.com/reinforcement-learning-from-scratch-simple-application-and-evaluating-parameters-in-detail-2dcee3de008c)
+
+
+
+Links to mp4 files in bucket:
+- s3.us-east.cloud-object-storage.appdomain.cloud/hw11cb/a_episode800.mp4
+- s3.us-east.cloud-object-storage.appdomain.cloud/hw11cb/b_episode890.mp4
+- s3.us-east.cloud-object-storage.appdomain.cloud/hw11cb/c_episode850.mp4
+- s3.us-east.cloud-object-storage.appdomain.cloud/hw11cb/b_testing_run90.mp4
