@@ -6,9 +6,9 @@ Gamma, Learning Rate, Density First and Second Layer, Num_Epochs, epsilon_min
 
 2. What values did you try?
 
-Run 1 - Changed number of epochs from 1 to 3 AND lowered gamma from 0.99 to 0.75 \n
-Run 2 - Lowered gamma to 0.50, density 1st layer to 8, density second layer to 4, num_epochs to 5, epsilon_min to 0.05, and learning rate to 0.0001 \n
-Run 3 - Game to 0.25, num_epochs at 5, epsilon_min to 0.10, and learning rate to 0.005
+- Run 1 - Changed number of epochs from 1 to 3 AND lowered gamma from 0.99 to 0.75  
+- Run 2 - Lowered gamma to 0.50, density 1st layer to 8, density second layer to 4, num_epochs to 5, epsilon_min to 0.05, and learning rate to 0.0001
+- Run 3 - Game to 0.25, num_epochs at 5, epsilon_min to 0.10, and learning rate to 0.005
 
 3. Did you try any other changes that made things better or worse?
 
