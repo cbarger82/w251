@@ -6,6 +6,6 @@ RUN apk add mosquitto
 
 EXPOSE 1883
 
-WORKDIR /data/w251/hw3
+WORKDIR /home/w251/hw3_new
 
 CMD ["/usr/sbin/mosquitto"]
