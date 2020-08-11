@@ -2,19 +2,19 @@
 import numpy as np
 import cv2 as cv
 import paho.mqtt.client as mqtt
-face_cascade = cv.CascadeClassifier('/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml')
+face_cascade = cv.CascadeClassifier('/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml')
 
 # MQTT host/port and topic IDs
-LOCAL_MQTT_BROKER="mosquitto"
+LOCAL_MQTT_HOST="mosquitto"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="hw03"
 
 def on_connect(client, userdata, result):
-    print("Connected with result code {0}".format(str(result))) 
+    print("Connected with result code {0}".format(str(result)))
 
 mqttclient=mqtt.Client()
 mqttclient.on_connect = on_connect
-mqttclient.connect(LOCAL_MQTT_BROKER, LOCAL_MQTT_PORT,60)
+mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
 
 # Capture using the USB camera
 cap = cv.VideoCapture(1)
@@ -32,10 +32,10 @@ while(True):
         face_color = frame[y:y+h, x:x+w]
 
         result_png = cv.imencode(".png", face_gray)[1]
-        
+
         #msg = jpg.tobytes()
-        mqttclient.publish(LOCAL_MQTT_TOPIC, payload=result_png, qos=2, retain=False)
-    
+        mqttclient.publish(LOCAL_MQTT_TOPIC, payload=result_png.tobytes(), qos=2, retain=False)
+
     cv.imshow('frame', frame)
 
 # Capture, send, then remove
