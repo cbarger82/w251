@@ -4,7 +4,7 @@ import random
 import os
 import numpy as np
 
-bk_path = '/data/w251/hw3/mntbucket'
+bk_path = '/home/w251/hw3_new/mntbucket'
 
 LOCAL_MQTT_HOST="cloud_mosquitto"
 LOCAL_MQTT_PORT=1883
