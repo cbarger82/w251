@@ -3,14 +3,14 @@
 Set up a bridge network via: docker network create --driver bridge hw03
 
 Set up JETSON containers:
-> 1. Face Detection Container
-> --Set up face detection docker image:
->  ---- Dockerfile.fd - This container publishes messages to the Jetson MQTT Broker
->  ---- face_detection.py - This is the python file used by the MQTT message forwarder that will push messages to the Cloud Broker
-> #BUILD CONTAINER: docker build -t facedetector -f Dockerfile.fd .
-> #Set permissions: xhost +
-> #START CONTAINER: docker run --privileged -it --rm --name=facedetector --network hw03 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix --volume $PWD:/home/w251/hw3_new facedetector:latest bash
->   --Once in container, run face_detection.py
+1. Face Detection Container
+--Set up face detection docker image:
+ ---- Dockerfile.fd - This container publishes messages to the Jetson MQTT Broker
+ ---- face_detection.py - This is the python file used by the MQTT message forwarder that will push messages to the Cloud Broker
+#BUILD CONTAINER: docker build -t facedetector -f Dockerfile.fd .
+#Set permissions: xhost +
+#START CONTAINER: docker run --privileged -it --rm --name=facedetector --network hw03 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix --volume $PWD:/home/w251/hw3_new facedetector:latest bash
+   --Once in container, run face_detection.py
 
 
 2. MQTT Broker Container
