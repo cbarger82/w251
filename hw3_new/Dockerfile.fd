@@ -3,8 +3,8 @@ FROM w251/cuda:dev-tx2-4.3_b132
 
 
 # Install necessary packages 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y python-opencv \
+RUN sudo apt-get -y update && sudo apt-get -y upgrade
+RUN apt install -y python-opencv \
                        python-pip \
                        libopencv-dev \
                        vim-tiny \
@@ -14,8 +14,8 @@ RUN apt-get install -y python-opencv \
 RUN pip install paho-mqtt
 
 # Set directory and copy python file
-WORKDIR /data/w251/hw3
-COPY face_detection.py
+WORKDIR /home/w251/hw3_new
+COPY face_detection.py .
 
 # Run python file
-CMD ["face_detection.py"]
+CMD python face_detection.py
