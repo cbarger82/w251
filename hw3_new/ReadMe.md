@@ -10,7 +10,7 @@ Set up JETSON containers:
 #BUILD CONTAINER: docker build -t facedetector -f Dockerfile.fd .
 #Set permissions: xhost +
 #START CONTAINER: docker run --privileged -it --rm --name=facedetector --network hw03 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix --volume $PWD:/home/w251/hw3_new facedetector:latest bash
-  --Once in container, run face_detector.py
+  --Once in container, run face_detection.py
 
 
 2. MQTT Broker Container
@@ -37,9 +37,9 @@ OUTPUT:
 --Recieves messages from local broker and sends them to the cloud broker
 ----Dockerfile.mqttfwd
 ----picsender.py
-#BUILD CONTAINER: docker build -t forwarder -f Dockerfile.mqttbk .
-#START CONTAINER: sudo docker run --name forwarder --network hw03 -v /tmp/.X11-unix/:/tmp/.X11-unix --volume $PWD:/home/w251/hw3_new -ti forwarder:latest /bin/ash
-  --Once in container, run picsender.py
+#BUILD CONTAINER: docker build -t forwarder -f Dockerfile.mqttfwd .
+#START CONTAINER: docker run --name forwarder --network hw03 -v /tmp/.X11-unix/:/tmp/.X11-unix --volume $PWD:/home/w251/hw3_new -ti forwarder:latest /bin/ash
+  --Once in container, run python forwarder.py
 #Forwarder is subscribing messages for the topic face_detect from the detector with QoS 2, which means to send the message exactly ONCE, and publishing messages to MQTTbroker
 
 ################################################################################
