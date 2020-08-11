@@ -9,8 +9,8 @@ LOCAL_MQTT_HOST="mosquitto"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="hw03"
 
-def on_connect(client, userdata, result):
-    print("Connected with result code {0}".format(str(result)))
+def on_connect(client, userdata, rc):
+    print("Connected with result code {0}".format(str(rc)))
 
 mqttclient=mqtt.Client()
 mqttclient.on_connect = on_connect
@@ -26,18 +26,11 @@ while(True):
     faces = face_cascade.detectMultiScale(gray,1.3,5)
 
     for (x,y,w,h) in faces:
-        cv.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-        #print("face detected ",face.dtype)
-        face_gray = gray[y:y+h, x:x+w]
-        face_color = frame[y:y+h, x:x+w]
+        face = frame[y:y+h,x:x+w]
+        print("face detected ",face.dtype)
+        rc,jpg = cv.imencode(".png",face)
+        msg = jpg.tobytes()
+        mqttclient.publish(LOCAL_MQTT_TOPIC,payload=msg,qos=2,retain=False)
 
-        result_png = cv.imencode(".png", face_gray)[1]
-
-        #msg = jpg.tobytes()
-        mqttclient.publish(LOCAL_MQTT_TOPIC, payload=result_png.tobytes(), qos=2, retain=False)
-
-    cv.imshow('frame', frame)
-
-# Capture, send, then remove
 cap.release()
 cv.destroyAllWindows()
