@@ -1,0 +1,21 @@
+# Where I went wrong before -- need to pull base cuda image from prebuilt images
+FROM w251/cuda:dev-tx2-4.3_b132
+
+
+# Install necessary packages 
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y python-opencv \
+                       python-pip \
+                       libopencv-dev \
+                       vim-tiny \
+                       mosquitto-clients
+
+# Install paho mqtt to send messages to cloud
+RUN pip install paho-mqtt
+
+# Set directory and copy python file
+WORKDIR /data/w251/hw3
+COPY face_detection.py
+
+# Run python file
+CMD ["face_detection.py"]

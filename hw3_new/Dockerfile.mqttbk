@@ -1,0 +1,11 @@
+FROM python:3.7-alpine
+
+# Install necessary packages 
+RUN apk update && apk upgrade
+RUN apk add mosquitto
+
+EXPOSE 1883
+
+WORKDIR /data/w251/hw3
+
+CMD ["/usr/sbin/mosquitto"]
